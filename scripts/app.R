@@ -1,11 +1,15 @@
 #if(!require(stringdist)) install.packages("stringdist")
 library(stringdist)
 library(data.table)
+library(dplyr)
+
 # Read DHIS2 data
 dhis_data <- readRDS("data/dhis_data.rds")
 
 # Filter unique rows for the specified columns
-dhis_org_unit_data <- unique(dhis_data[, c("organisation_unit_name", "region", "zone", "woreda", "phcu", "facility")])
+dhis_org_unit_data <- dhis_data %>%
+  select(organisation_unit_name, region, zone, woreda, phcu, facility) %>%
+  distinct()
 process_dhis2_org_unit_data <- copy(dhis_org_unit_data)
 
 # Read Woreda list from AHRI
