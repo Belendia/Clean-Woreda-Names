@@ -22,6 +22,7 @@ for (i in 1:nrow(dhis_org_unit_data)) {
   if (nrow(merged_data) == 0) {
     print(paste("No matching rows found for row", i))
     process_dhis2_org_unit_data$visual_inspection[i] <- NA  # Mark as NA
+    process_dhis2_org_unit_data$distance[i] <- NA
     next  # Skip this iteration if no rows are found
   }
   
@@ -46,7 +47,7 @@ for (i in 1:nrow(dhis_org_unit_data)) {
   
   # Assign closest match
   process_dhis2_org_unit_data[i, names(merged_data)] <- merged_data[closest_match_index, ]
-  
+  process_dhis2_org_unit_data$distance[i] <- min_distance
   # if min_distance is greater than 0.3 mark it for visual inspection
   if (min_distance > 0.3) {
     process_dhis2_org_unit_data$visual_inspection[i] <- TRUE  # Mark for Visual Inspection
